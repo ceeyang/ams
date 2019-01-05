@@ -1,0 +1,14 @@
+.home-page{
+    border: 1px solid #eee;
+    .home-page-header{
+        display: flex;
+        justify-content: space-between;
+        .home-page-header-logo{
+            font-size: 50px;
+        }
+    }
+    .home-page-left-aside{
+        width: 150px;
+        background-color: rgb(238, 241, 246);
+    }
+}

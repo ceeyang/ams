@@ -1,8 +1,18 @@
 <template lang="html">
-    <el-container style="height: device-height; border: 1px solid #eee">
+    <el-container class="home-page">
         <!-- 头部 -->
-        <el-header style="text-align: right; font-size: 12px">
-            <i class="el-icon-menu"></i>
+        <el-header class="home-page-header">
+            <el-dropdown @command="dropdownCommand">
+                <span class="el-dropdown-link">
+                    {{currentSheet}}
+                    <i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <template v-for="(sheet, index) in totalSheets",:key="index">
+                        <el-dropdown-item :command="index">{{sheet}}</el-dropdown-item>
+                    </template>
+                </el-dropdown-menu>
+            </el-dropdown>
             <span>联恒考勤管理系统</span>
             <el-upload
                 ref="upload"
@@ -23,23 +33,14 @@
         <!-- main container -->
         <el-container>
             <!-- 侧边栏 -->
-            <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-                <el-menu :default-openeds=defaultOpens>
-                    <el-submenu index="1">
-                        <template slot="title"><i class="el-icon-message"></i>导航一</template>
-                        <el-menu-item-group>
-                            <template slot="title">分组一</template>
-                            <el-menu-item index="1-1">选项1</el-menu-item>
-                            <el-menu-item index="1-2">选项2</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group title="分组2">
-                            <el-menu-item index="1-3">选项3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-submenu index="1-4">
-                            <template slot="title">选项4</template>
-                            <el-menu-item index="1-4-1">选项4-1</el-menu-item>
-                        </el-submenu>
-                    </el-submenu>
+            <el-aside class="home-page-left-aside">
+                <el-menu
+                    default-active="1"
+                    @open="handleOpen"
+                    @close="handleClose">
+                    <template v-for="(user, index) in allUsers">
+                        <el-menu-item :index="user">{{user}}</el-menu-item>
+                    </template>
                 </el-menu>
             </el-aside>
 
@@ -66,16 +67,34 @@ export default {
     };
     return {
       tableData: Array(20).fill(item),
-      // 所有用户
-      users: [],
+
+      // 月份
       // 默认打开数据
       defaultOpens: ['1'],
+      currentSheet: '月份',
+      totalSheets: ['1月份', '2月份', '3月份', '4月份'],
+
+      // 用户
+      allUsers: ['张三', '李四', '小五'],
+
     }
   },
   mounted() {
 
   },
   methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+
+    // 月份下拉列表点击事件
+    dropdownCommand(index) {
+      this.currentSheet = this.totalSheets[index];
+    },
+
     // 导出按钮点击事件
     exportBtnDidClick() {
       alert('exportBtnDidClick')
@@ -84,6 +103,7 @@ export default {
     /// 读取 xlsx 文件
     readExcel(file) {
       const fileReader = new FileReader();
+      var vm = this;
       fileReader.onload = (ev) => {
         try {
           debugger
@@ -92,8 +112,10 @@ export default {
             type: 'binary'
           });
           console.log(workbook);
+          vm.totalSheets = [];
           for (let sheet in workbook.Sheets) {
             const sheetArray = XLSX.utils.sheet_to_json(workbook.Sheets[sheet]); //获得以第一列为键名的sheet数组对象
+            vm.totalSheets.push(sheet)
             console.log(sheet);
             console.log(sheetArray);
           }
