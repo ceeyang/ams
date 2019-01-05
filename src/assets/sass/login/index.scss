@@ -1,0 +1,22 @@
+.login-page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .login-page-logo{
+        margin-top: 200px;
+        width: 200px;
+        height: 200px;
+    }
+    .login-page-welcome{
+        margin-top: 50px;
+        font-size: 30px;
+    }
+    .login-page-input-view{
+        margin-top: 50px;
+        width: 500px;
+        .el-input{
+            margin-bottom: 20px;
+        }
+    }
+}
