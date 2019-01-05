@@ -16,6 +16,11 @@ Vue.use(ElementUI)
 // Import App Custom Styles
 import AppStyles from './assets/sass/main.scss'
 
+/// iconfont
+import './assets/iconfont/config.css'
+import './assets/iconfont/iconfont.css'
+
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
