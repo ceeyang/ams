@@ -29,14 +29,14 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length <= 0) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('Please enter the user name'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+      if (value.length <= 0) {
+        callback(new Error('Please enter the password'))
       } else {
         callback()
       }
@@ -97,17 +97,22 @@ export default {
       }
     },
     handleLogin() {
+        var vm = this
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({
-              path: this.redirect || '/'
-            })
-          }).catch(() => {
-            this.loading = false
-          })
+          vm.loading = true
+          // this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+          //   this.loading = false
+          //   this.$router.push({
+          //     path: this.redirect || '/'
+          //   })
+          // }).catch(() => {
+          //   this.loading = false
+          // })
+          setTimeout(function () {
+            vm.loading = false;
+            vm.$router.push('/Home/')
+          }, 2000);
         } else {
           console.log('error submit!!')
           return false
