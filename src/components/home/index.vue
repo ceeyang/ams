@@ -14,19 +14,8 @@
                 </el-dropdown-menu>
             </el-dropdown>
             <span>联恒考勤管理系统</span>
-            <el-upload
-                ref="upload"
-                action="/upload/"
-                :on-change="readExcel"
-                :show-file-list="false"
-                :auto-upload="false">
-                <el-button
-                    slot="trigger"
-                    icon="el-icon-upload"
-                    size="small"
-                    type="primary">
-                    上传文件
-                </el-button>
+            <el-upload ref="upload" action="/upload/" :on-change="readExcel" :show-file-list="false" :auto-upload="false">
+                <el-button  slot="trigger"  icon="el-icon-upload" size="small" type="primary">上传文件</el-button>
             </el-upload>
         </el-header>
 
@@ -34,10 +23,7 @@
         <el-container>
             <!-- 侧边栏 -->
             <el-aside class="home-page-left-aside">
-                <el-menu
-                    default-active="1"
-                    @open="handleOpen"
-                    @close="handleClose">
+                <el-menu default-active="1" @open="handleOpen" @close="handleClose">
                     <template v-for="(user, index) in allUsers">
                         <el-menu-item :index="user">{{user}}</el-menu-item>
                     </template>
@@ -47,9 +33,11 @@
             <!-- tableview -->
             <el-main>
               <el-table :data="tableData">
-                <el-table-column prop="name" label="姓名" width="120"></el-table-column>
-                <el-table-column prop="date" label="日期" width="140"></el-table-column>
-                <el-table-column prop="address" label="地址"></el-table-column>
+                <!-- <el-table-column prop="name" label="姓名" width="120"></el-table-column> -->
+                <el-table-column prop="date" label="日期"></el-table-column>
+                <el-table-column prop="morning" label="上班打卡"></el-table-column>
+                <el-table-column prop="night" label="下班打卡"></el-table-column>
+                <el-table-column prop="note" label="备注"></el-table-column>
               </el-table>
             </el-main>
         </el-container>
@@ -63,7 +51,9 @@ export default {
     const item = {
       date: '2016-05-02',
       name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
+      morning: '09:00',
+      night: '19:00',
+      note: ''
     };
     return {
       tableData: Array(20).fill(item),
@@ -75,7 +65,7 @@ export default {
       totalSheets: ['1月份', '2月份', '3月份', '4月份'],
 
       // 用户
-      allUsers: ['张三', '李四', '小五'],
+      allUsers: ["刘艳婷", "江晓花", "封贻均", "杨文飚", "熊启敏", "俞涛涛", "余勇学", "左瑶", "杨西川", "张艳", "李攀"],
 
     }
   },
@@ -118,6 +108,15 @@ export default {
             vm.totalSheets.push(sheet)
             console.log(sheet);
             console.log(sheetArray);
+
+            if (sheet == '总加班时长') {
+                vm.allUsers = []
+                for (var i = 0; i < sheetArray.length; i++) {
+                    let user = sheetArray[i]["5-10月份加班总表"]
+                    vm.allUsers.push(user)
+                }
+                console.log(vm.allUsers);
+            }
           }
         } catch (e) {
           this.$message.warning('文件类型不正确！');
