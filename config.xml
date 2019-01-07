@@ -25,4 +25,6 @@
     </platform>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <engine name="osx" spec="^4.0.2" />
+    <engine name="ios" spec="^4.5.5" />
+    <engine name="windows" spec="^6.0.1" />
 </widget>
